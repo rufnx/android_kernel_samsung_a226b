@@ -65,11 +65,6 @@ if ! command -v clang &> /dev/null; then
     exit 1
 fi
 
-if ! command -v aarch64-linux-android- &> /dev/null; then
-    log_error "GCC cross-compiler not found in PATH"
-    exit 1
-fi
-
 # Build arguments
 ARGS=(
     -j"$(nproc --all)"
