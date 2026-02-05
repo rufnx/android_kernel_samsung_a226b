@@ -28,7 +28,7 @@ print_error() {
 }
 
 print_header() {
-    echo -e "${BLUE}######${NC} $1"
+    echo -e "${BLUE}############${NC} $1"
 }
 
 ################################################################################
@@ -194,13 +194,13 @@ send_notification() {
     print_header "Sending build notification"
     
     local kver=$(strings $OUT_DIR/arch/arm64/boot/Image 2>/dev/null | grep "Linux version" | head -n1)
-    local commit=$(git log --oneline -1)
+    local commit_id=$(git rev-parse HEAD)
     
     local caption="*Build Succes*
 \`\`\`
 $kver
 \`\`\`
-[commit]($commit)"
+[commit]($commit_id)"
     
     if [ -f $AK3_DIR/$ZIPNAME ]; then
         push_to_telegram $AK3_DIR/$ZIPNAME "$caption"
