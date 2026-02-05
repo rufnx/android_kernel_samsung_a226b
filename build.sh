@@ -57,20 +57,20 @@ fetch_toolchain() {
 
 setup_toolchains() {
     print_header "Setting up toolchains"
-    
+
     if [ ! -d $CLANG_DIR ]; then
         fetch_toolchain "clang-13" $CLANG_DIR
     else
         print_info "Clang toolchain already exists"
     fi
-    
+
     export PATH=$CLANG_DIR/bin:$PATH
-    
+
     if ! command -v clang &> /dev/null; then
         print_error "Clang not found in PATH"
         exit 1
     fi
-    
+
     print_info "Toolchain: $(clang --version | head -n1)"
 }
 
@@ -80,7 +80,7 @@ setup_toolchains() {
 push_to_telegram() {
     [ -z $BOT_TOKEN ] && return
     [ -z $CHAT_ID ] && return
-    
+
     curl -s -F "document=@$1" \
          -F "chat_id=$CHAT_ID" \
          -F "caption=$2" \
@@ -125,7 +125,7 @@ get_build_args() {
 ################################################################################
 configure_kernel() {
     print_header "Configuring kernel with $DEFCONFIG"
-    
+
     if make -C $KDIR $(get_build_args) $DEFCONFIG; then
         print_info "Configuration completed successfully"
     else
@@ -136,17 +136,17 @@ configure_kernel() {
 
 compile_kernel() {
     print_header "Building kernel"
-    
+
     local start_time=$(date +%s)
-    
+
     if make -C $KDIR $(get_build_args); then
         local end_time=$(date +%s)
         local elapsed=$((end_time - start_time))
         local minutes=$((elapsed / 60))
         local seconds=$((elapsed % 60))
-        
+
         print_header "Build completed in ${minutes}m ${seconds}s"
-        
+
         if [ -f $OUT_DIR/arch/arm64/boot/Image ] || [ -f $OUT_DIR/arch/arm64/boot/Image.gz ]; then
             print_info "Kernel image created successfully"
             ls -lh $OUT_DIR/arch/arm64/boot/Image* 2>/dev/null
@@ -165,19 +165,19 @@ compile_kernel() {
 ################################################################################
 create_flashable_zip() {
     print_header "Creating flashable package"
-    
+
     if [ ! -d $AK3_DIR ]; then
         print_info "Cloning AnyKernel3..."
         git clone --depth=1 --single-branch https://github.com/rufnx/AnyKernel3.git -b a22x $AK3_DIR
     fi
-    
+
     print_info "Copying kernel image..."
     cp $OUT_DIR/arch/arm64/boot/Image.gz $AK3_DIR/
-    
+
     print_info "Creating zip archive..."
     cd $AK3_DIR
     zip -r9 $ZIPNAME * -x .git README.md *placeholder
-    
+
     if [ -f $ZIPNAME ]; then
         print_info "Package created: $ZIPNAME"
         ls -lh $ZIPNAME
@@ -192,16 +192,13 @@ create_flashable_zip() {
 ################################################################################
 send_notification() {
     print_header "Sending build notification"
-    
+
     local kver=$(strings $OUT_DIR/arch/arm64/boot/Image 2>/dev/null | grep "Linux version" | head -n1)
-    local commit_id=$(git rev-parse HEAD)
-    
     local caption="*Build Succes*
 \`\`\`
 $kver
-\`\`\`
-[commit]($commit_id)"
-    
+\`\`\`"
+
     if [ -f $AK3_DIR/$ZIPNAME ]; then
         push_to_telegram $AK3_DIR/$ZIPNAME "$caption"
         print_info "Notification sent"
@@ -213,14 +210,14 @@ $kver
 ################################################################################
 main() {
     print_header "Starting kernel build process"
-    
+
     setup_toolchains
     setup_build_env
     configure_kernel
     compile_kernel
     create_flashable_zip
     send_notification
-    
+
     print_header "All tasks completed successfully"
 }
 
