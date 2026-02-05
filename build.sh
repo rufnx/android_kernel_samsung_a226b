@@ -40,7 +40,7 @@ OUT_DIR=$KDIR/out
 AK3_DIR=$KDIR/AK3
 DEFCONFIG=rufnx_defconfig
 DATE=$(date +%Y%m%d-%H%M)
-ZIPNAME=AnyKernel3-a22x-$DATE.zip
+ZIPNAME=AnyKernel3-$DATE.zip
 
 ################################################################################
 # Toolchain Management
@@ -81,30 +81,16 @@ push_to_telegram() {
     [ -z $BOT_TOKEN ] && return
     [ -z $CHAT_ID ] && return
 
-    curl -s -F "document=@$1" \
-         -F "chat_id=$CHAT_ID" \
-         -F "caption=$2" \
-         -F "parse_mode=Markdown" \
-         "https://api.telegram.org/bot$BOT_TOKEN/sendDocument" > /dev/null
+    if curl -LSs https://raw.githubusercontent.com/rufnx/kernel_patch/master/common/bot | bash -s $1 $2; then
+      print_info "send telegram success"
+    else
+      print_info "failed send file to telegram"
+    fi
 }
 
 ################################################################################
 # Build Configuration
 ################################################################################
-setup_build_env() {
-    export ARCH=arm64
-    export SUBARCH=arm64
-    export CROSS_COMPILE=aarch64-linux-gnu-
-    export CC=clang
-    export AR=llvm-ar
-    export NM=llvm-nm
-    export OBJCOPY=llvm-objcopy
-    export OBJDUMP=llvm-objdump
-    export STRIP=llvm-strip
-    export KCFLAGS=-w
-    export KBUILD_OUTPUT=$OUT_DIR
-}
-
 get_build_args() {
     echo "-j$(nproc --all) \
           ARCH=arm64 \
@@ -125,8 +111,8 @@ get_build_args() {
 ################################################################################
 configure_kernel() {
     print_header "Configuring kernel with $DEFCONFIG"
-
-    if make -C $KDIR $(get_build_args) $DEFCONFIG; then
+    
+    if make $(get_build_args) $DEFCONFIG; then
         print_info "Configuration completed successfully"
     else
         print_error "Configuration failed"
@@ -138,8 +124,8 @@ compile_kernel() {
     print_header "Building kernel"
 
     local start_time=$(date +%s)
-
-    if make -C $KDIR $(get_build_args); then
+    
+    if make $(get_build_args); then
         local end_time=$(date +%s)
         local elapsed=$((end_time - start_time))
         local minutes=$((elapsed / 60))
@@ -194,13 +180,9 @@ send_notification() {
     print_header "Sending build notification"
 
     local kver=$(strings $OUT_DIR/arch/arm64/boot/Image 2>/dev/null | grep "Linux version" | head -n1)
-    local caption="*Build Succes*
-\`\`\`
-$kver
-\`\`\`"
-
+    
     if [ -f $AK3_DIR/$ZIPNAME ]; then
-        push_to_telegram $AK3_DIR/$ZIPNAME "$caption"
+        push_to_telegram $AK3_DIR/$ZIPNAME $kver
         print_info "Notification sent"
     fi
 }
@@ -212,7 +194,6 @@ main() {
     print_header "Starting kernel build process"
 
     setup_toolchains
-    setup_build_env
     configure_kernel
     compile_kernel
     create_flashable_zip
