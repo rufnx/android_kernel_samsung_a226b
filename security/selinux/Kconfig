@@ -77,10 +77,11 @@ config SECURITY_SELINUX_ALWAYS_ENFORCE
 	default n
 	help
 	  This option will prevent anything from setting SELinux to permissive.
+
 config SECURITY_SELINUX_ALWAYS_PERMISSIVE
 	bool "NSA SELinux Always Permissive"
 	depends on SECURITY_SELINUX_DEVELOP
-	default n
+	default y
 	help
 	  This option will prevent anything from setting SELinux to enforcing.
 
