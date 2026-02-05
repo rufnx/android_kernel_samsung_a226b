@@ -2760,11 +2760,7 @@ static int wp_page_copy(struct vm_fault *vmf)
 		new_page = alloc_page_vma(GFP_HIGHUSER_MOVABLE, vma,
 				vmf->address);
 		if (!new_page)
-<<<<<<< HEAD
 			goto out;
-		cow_user_page(new_page, old_page, vmf->address, vma);
-=======
-			goto oom;
 
 		if (!cow_user_page(new_page, old_page, vmf)) {
 			/*
@@ -2778,7 +2774,6 @@ static int wp_page_copy(struct vm_fault *vmf)
 				put_page(old_page);
 			return 0;
 		}
->>>>>>> ASB-2020-10-05_4.14-stable
 	}
 
 	if (mem_cgroup_try_charge(new_page, mm, GFP_KERNEL, &memcg, false))
