@@ -121,7 +121,7 @@ endif
         # @} For FM built-in mode end
 
         # For GPS built-in mode start @{
-        obj-y += gps_drv/
+        obj-y += gps/
         # @} For GPS built-in mode end
 
     endif
