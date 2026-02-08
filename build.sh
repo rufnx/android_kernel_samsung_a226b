@@ -28,7 +28,10 @@ ARGS=(
     CONFIG_SECTION_MISMATCH_WARN_ONLY=y
 )
 
-make ${ARGS[@]} rufnx_defconfig
+[[ "${KSU}" == true ]] && curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s legacy
+[[ -z ${DEFCONFIG} ]] && DEFCONFIG=rufnx_defconfig
+
+make ${ARGS[@]} $DEFCONFIG
 make ${ARGS[@]} | tee build.log
 
 if [ -f ${GZIP} ]; then
