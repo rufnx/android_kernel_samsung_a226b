@@ -460,7 +460,11 @@ config MTK_CONNSYS_DEDICATED_LOG_PATH
 	     BT firmware log, GPS firmware log etc.
 
 config WLAN_DRV_BUILD_IN
+    select MTK_COMBO_BT
+    select MTK_COMBO_WIFI
+    select MTK_COMBO_GPS
+    select MTK_COMBO_FMRADIO
 	bool "Mtk modul connectivity"
 	default y
 	help
-	  This enable build in boot img or build inline.
+      If enabled, this will force some module build as inline.

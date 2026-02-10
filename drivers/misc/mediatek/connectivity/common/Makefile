@@ -54,36 +54,36 @@ else
 endif
 ccflags-y += -D MTK_WCN_WMT_STP_EXP_SYMBOL_ABSTRACT
 
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include/mach
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/$(MTK_PLATFORM)
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/include
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/include/clkbuf_v1
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/include/clkbuf_v1/$(MTK_PLATFORM)
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/btif/common/inc
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/include
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include/mach
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/include/mt-plat
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/base/power/$(MTK_PLATFORM)
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/base/power/include
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/base/power/include/clkbuf_v1
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/base/power/include/clkbuf_v1/$(MTK_PLATFORM)
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/btif/common/inc
 ifeq ($(strip $(MTK_PLATFORM)), mt6735)
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/eccci1
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/eccci1/$(MTK_PLATFORM)
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/eccci1
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/eccci1/$(MTK_PLATFORM)
 else
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/eccci
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/eccci/$(MTK_PLATFORM)
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/eccci
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/eccci/$(MTK_PLATFORM)
 endif
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/eemcs
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/conn_md/include
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/mach/$(MTK_PLATFORM)/include/mach
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/emi/submodule
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/emi/$(MTK_PLATFORM)
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/eemcs
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/conn_md/include
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/mach/$(MTK_PLATFORM)/include/mach
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/emi/submodule
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/emi/$(MTK_PLATFORM)
 ifeq ($(CONFIG_MTK_PMIC_CHIP_MT6359),y)
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/pmic/include/mt6359
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/pmic/include/mt6359
 endif
 ifeq ($(CONFIG_MTK_PMIC_CHIP_MT6359P),y)
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/pmic/include/mt6359p
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/pmic/include/mt6359p
 endif
-ccflags-y += -I$(srctree)/drivers/mmc/core
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/connectivity/common
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat
+ccflags-y += -I$(TOP)/drivers/mmc/core
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/connectivity/common
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/include/mt-plat
 ###############################################################################
 
 
@@ -115,17 +115,13 @@ endif
 ###############################################################################
 MODULE_NAME := wmt_drv
 ifeq ($(CONFIG_WLAN_DRV_BUILD_IN),y)
-$(warning $(MODULE_NAME) build-in boot.img)
 obj-y += $(MODULE_NAME).o
-else
-$(warning $(MODULE_NAME) is kernel module)
-obj-m += $(MODULE_NAME).o
 endif
 
 ###############################################################################
 # common_detect
 ###############################################################################
-ccflags-y += -I$(srctree)/arch/arm/mach-$(MTK_PLATFORM)/$(ARCH_MTK_PROJECT)/dct/dct
+ccflags-y += -I$(TOP)/arch/arm/mach-$(MTK_PLATFORM)/$(ARCH_MTK_PROJECT)/dct/dct
 ccflags-y += -DWMT_PLAT_ALPS=1
 
 COMBO_CHIP_SUPPORT := false

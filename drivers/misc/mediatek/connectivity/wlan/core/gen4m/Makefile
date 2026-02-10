@@ -19,9 +19,6 @@ ccflags-y += -DCFG_VIRTUAL_OS
 ccflags-y += -DCFG_REMIND_IMPLEMENT
 endif
 
-ifndef TOP
-    TOP := $(srctree)
-endif
 $(info os option: $(os))
 # ---------------------------------------------------
 # ALPS Setting
@@ -361,7 +358,7 @@ else
 endif
 
 ifeq ($(CONFIG_MTK_TC1_FEATURE), y)
-    ccflags-y += -I$(srctree)/drivers/misc/mediatek/tc1_interface
+    ccflags-y += -I$(TOP)/drivers/misc/mediatek/tc1_interface
     ccflags-y += -DCFG_TC1_FEATURE=1
 else
     ccflags-y += -DCFG_TC1_FEATURE=0
@@ -377,17 +374,17 @@ ccflags-y += -I$(src)/include -I$(src)/include/nic -I$(src)/include/mgmt -I$(src
 ifeq ($(CFG_SUPPORT_WIFI_SYSDVT), 1)
 ccflags-y += -I$(src)/include/dvt
 endif
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/include/
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/performance/include/
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/emi/$(MTK_PLATFORM)
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/emi/submodule
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/connectivity/common
-ccflags-y += -I$(srctree)/drivers/devfreq/
-ccflags-y += -I$(srctree)/net
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/base/power/include/
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/include/mt-plat/
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/performance/include/
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/emi/$(MTK_PLATFORM)
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/emi/submodule
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/connectivity/common
+ccflags-y += -I$(TOP)/drivers/devfreq/
+ccflags-y += -I$(TOP)/net
 
 ifeq ($(CONFIG_MTK_MCIF_WIFI_SUPPORT), y)
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/mddp/include/
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/mddp/include/
 ccflags-y += -DCFG_MTK_MCIF_WIFI_SUPPORT=1
 ifeq ($(CONFIG_MTK_MDDP_WH_SUPPORT), y)
 ccflags-y += -DCFG_MTK_MDDP_WH_SUPPORT=1
@@ -430,13 +427,8 @@ obj-$(CONFIG_MTK_COMBO_WIFI) += $(MODULE_NAME).o
 endif
 
 ifeq ($(CONFIG_WLAN_DRV_BUILD_IN),y)
-$(warning $(MODULE_NAME) build-in boot.img)
 obj-y += $(MODULE_NAME).o
 ccflags-y += -DCONFIG_WLAN_DRV_BUILD_IN=1
-else
-$(warning $(MODULE_NAME) is kernel module)
-obj-m += $(MODULE_NAME).o
-ccflags-y += -DCONFIG_WLAN_DRV_BUILD_IN=0
 endif
 
 # ---------------------------------------------------
@@ -682,7 +674,7 @@ PLAT_PRIV_C = $(src)/$(PLAT_DIR)plat_priv.c
 # search path (out of kernel tree)
 IS_EXIST_PLAT_PRIV_C := $(wildcard $(PLAT_PRIV_C))
 # search path (build-in kernel tree)
-IS_EXIST_PLAT_PRIV_C += $(wildcard $(srctree)/$(PLAT_PRIV_C))
+IS_EXIST_PLAT_PRIV_C += $(wildcard $(TOP)/$(PLAT_PRIV_C))
 
 ifneq ($(strip $(IS_EXIST_PLAT_PRIV_C)),)
 PLAT_OBJS := $(PLAT_DIR)plat_priv.o

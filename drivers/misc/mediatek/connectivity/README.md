@@ -1,9 +1,9 @@
 # Mediatek external kernel modules
 
 > [!NOTE]
-> Imported from `SM-A226B/Platform.tar.gz/drivers/misc/mediatek/connectivity`
+> Imported from `SM-A226B/Platform.tar.gz/vendor/mediatek/kernel_modules/connectivity`
 >
-> Supported platform: `MT6833`
+> Supported platform: `MT6833` & `MT6853`
 
 > [!WARNING]
 > This driver is intended only for 4.14.x. Not for 4.9.x and below or 4.19.x and above.
@@ -18,9 +18,9 @@ CONFIG_MTK_GPS_SUPPORT=y
 CONFIG_MTK_FMRADIO=y
 ```
 
-# Build configurations
+# How to use
 ```
-CONFIG_DRV_BUILD_IN=y
+rm -rf ${KERNEL_DIR}/drivers/misc/mediatek/connectivity && git clone https://github.com/rufnx/mtk_module_connectivity.git ${KERNEL_DIR}/drivers/misc/mediatek/connectivity
 ```
 # Bootloop issue
 Bootloops can be caused by the drivers in `/vendor/lib/modules/*.ko` conflicting with drivers inline. Removing `/vendor/lib/modules/` can solve it.

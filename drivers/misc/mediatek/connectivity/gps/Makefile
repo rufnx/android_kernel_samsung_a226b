@@ -23,9 +23,6 @@ ifneq ($(KERNEL_OUT),)
     ccflags-y += -imacros $(KERNEL_OUT)/include/generated/autoconf.h
 endif
 
-ifndef TOP
-    TOP := $(srctree)
-endif
 ifeq ($(TARGET_BUILD_VARIANT),$(filter $(TARGET_BUILD_VARIANT),userdebug user))
     ldflags-y += -s
 endif
@@ -48,21 +45,21 @@ else
 endif
 ccflags-y += -D MTK_WCN_WMT_STP_EXP_SYMBOL_ABSTRACT
 
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include/mach
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/freqhopping
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/freqhopping/$(MTK_PLATFORM)
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/emi/submodule
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/emi/$(MTK_PLATFORM)
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/connectivity/common
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/mach/$(MTK_PLATFORM)/include/mach
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/$(MTK_PLATFORM)
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/include
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/include/clkbuf_v1
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/include/clkbuf_v1/$(MTK_PLATFORM)
-ccflags-y += -I$(srctree)/drivers/devfreq
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/include
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/include/mt-plat
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include/mach
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/freqhopping
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/freqhopping/$(MTK_PLATFORM)
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/emi/submodule
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/emi/$(MTK_PLATFORM)
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/connectivity/common
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/mach/$(MTK_PLATFORM)/include/mach
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/base/power/$(MTK_PLATFORM)
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/base/power/include
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/base/power/include/clkbuf_v1
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/base/power/include/clkbuf_v1/$(MTK_PLATFORM)
+ccflags-y += -I$(TOP)/drivers/devfreq
 ###############################################################################
 
 MODULE_NAME := gps_drv

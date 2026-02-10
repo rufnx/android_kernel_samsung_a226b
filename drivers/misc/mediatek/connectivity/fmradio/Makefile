@@ -18,10 +18,6 @@ ifneq ($(KERNEL_OUT),)
     ccflags-y += -imacros $(KERNEL_OUT)/include/generated/autoconf.h
 endif
 
-ifndef TOP
-    TOP := $(srctree)
-endif
-
 # Force build fail on modpost warning
 KBUILD_MODPOST_FAIL_ON_WARNINGS := y
 ###############################################################################
@@ -40,8 +36,8 @@ else
 endif
 ccflags-y += -D MTK_WCN_WMT_STP_EXP_SYMBOL_ABSTRACT
 
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/include
+ccflags-y += -I$(TOP)/drivers/misc/mediatek/include/mt-plat
 
 ifeq ($(CONFIG_FM_USER_LOAD),1)
     ccflags-y += -D CONFIG_MTK_USER_BUILD

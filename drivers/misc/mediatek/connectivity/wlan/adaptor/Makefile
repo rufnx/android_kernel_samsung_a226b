@@ -5,15 +5,11 @@ ifneq ($(KERNEL_OUT),)
     ccflags-y += -imacros $(KERNEL_OUT)/include/generated/autoconf.h
 endif
 
-ifndef TOP
-    TOP := $(srctree)
-endif
-
 # Force build fail on modpost warning
 KBUILD_MODPOST_FAIL_ON_WARNINGS := y
 
 ccflags-y += \
-    -I$(srctree)/drivers/misc/mediatek/include/mt-plat \
+    -I$(TOP)/drivers/misc/mediatek/include/mt-plat \
     -I$(TOP)/drivers/misc/mediatek/connectivity/common/common_main/include \
     -I$(TOP)/drivers/misc/mediatek/connectivity/common/common_main/linux/include
 
@@ -50,11 +46,7 @@ ccflags-y += -D CREATE_NODE_DYNAMIC=1
 
 MODULE_NAME := wmt_chrdev_wifi
 ifeq ($(CONFIG_WLAN_DRV_BUILD_IN),y)
-$(warning $(MODULE_NAME) build-in boot.img)
 obj-y += $(MODULE_NAME).o
-else
-$(warning $(MODULE_NAME) is kernel module)
-obj-m += $(MODULE_NAME).o
 endif
 
 # Wi-Fi character device driver
