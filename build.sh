@@ -2,28 +2,33 @@
 
 set -e
 
-KERNEL_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+KERNEL_DIR=$(cd -- $(dirname -- ${BASH_SOURCE[0]}) && pwd)
 TOOLCHAIN=${KERNEL_DIR}/prebuilts
 GZIP=${KERNEL_DIR}/out/arch/arm64/boot/Image.gz
 
 if [ ! -d ${TOOLCHAIN} ]; then
-    git clone --depth=1 --single-branch -b clang-13 \
-        https://github.com/rufnx/toolchain.git ${TOOLCHAIN}
+    wget "$(curl -s https://raw.githubusercontent.com/ZyCromerZ/Clang/main/Clang-main-link.txt)" -O "zyc-clang.tar.gz"
+    mkdir ${TOOLCHAIN} && tar -xvf zyc-clang.tar.gz -C ${TOOLCHAIN}
     ${TOOLCHAIN}/bin/clang --version
     export PATH=${TOOLCHAIN}/bin:${PATH}
 fi
 
 ARGS=(
-    -j$(nproc --all)
-    ARCH=arm64
+    make -j$(nproc --all)
     O=out
-    CC=clang
-    CROSS_COMPILE=aarch64-linux-gnu-
+    ARCH=arm64
+    LLVM=1
+    LLVM_IAS=1
     AR=llvm-ar
     NM=llvm-nm
+    LD=ld.lld
     OBJCOPY=llvm-objcopy
     OBJDUMP=llvm-objdump
     STRIP=llvm-strip
+    CC=clang
+    DTC_EXT=dtc
+    CROSS_COMPILE=aarch64-linux-gnu-
+    CROSS_COMPILE_ARM32=arm-linux-gnueabi-
     KCFLAGS=-w
     CONFIG_SECTION_MISMATCH_WARN_ONLY=y
 )
