@@ -2,7 +2,7 @@
 
 set -e
 
-KERNEL_DIR=$(cd -- $(dirname -- ${BASH_SOURCE[0]}) && pwd)
+KERNEL_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 TOOLCHAIN=${KERNEL_DIR}/prebuilts
 GZIP=${KERNEL_DIR}/out/arch/arm64/boot/Image.gz
 
@@ -14,7 +14,7 @@ if [ ! -d ${TOOLCHAIN} ]; then
 fi
 
 ARGS=(
-    make -j$(nproc --all)
+    -j$(nproc --all)
     O=out
     ARCH=arm64
     LLVM=1
@@ -33,7 +33,7 @@ ARGS=(
     CONFIG_SECTION_MISMATCH_WARN_ONLY=y
 )
 
-make ARCH=arm64 O=out rufnx_defconfig
+make ${ARGS[@]} rufnx_defconfig
 make ${ARGS[@]} | tee compile.log
 
 if [ -f ${GZIP} ]; then
