@@ -33,7 +33,7 @@ ARGS=(
     CONFIG_SECTION_MISMATCH_WARN_ONLY=y
 )
 
-make ${ARGS[@]} rufnx_defconfig
+make ARCH=arm64 O=out rufnx_defconfig
 make ${ARGS[@]} | tee compile.log
 
 if [ -f ${GZIP} ]; then
