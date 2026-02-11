@@ -6,9 +6,8 @@ KERNEL_DIR=$(cd -- $(dirname -- ${BASH_SOURCE[0]}) && pwd)
 TOOLCHAIN=$KERNEL_DIR/prebuilts
 GZIP=$KERNEL_DIR/out/arch/arm64/boot/Image.gz
 
-[[ -z DEFCONFIG ]] && DEFCONFIG=rufnx_defconfig
-[[ -z BOT_TOKEN ]] && echo "BOT_TOKEN not set"
-[[ -z CHAT_ID ]] && echo "CHAT_ID not set"
+[ -z BOT_TOKEN ] && echo "BOT_TOKEN not set"
+[ -z CHAT_ID ] && echo "CHAT_ID not set"
 
 if [ ! -d $TOOLCHAIN ]; then
     wget "$(curl -s https://raw.githubusercontent.com/ZyCromerZ/Clang/main/Clang-15-link.txt)" -O "zyc-clang.tar.gz"
@@ -33,7 +32,7 @@ ARGS=(
     CONFIG_SECTION_MISMATCH_WARN_ONLY=y
 )
 
-make ${ARGS[@]} $DEFCONFIG
+make ${ARGS[@]} rufnx_defconfig
 make ${ARGS[@]} | tee compile.log
 
 if [ -f $GZIP ]; then
