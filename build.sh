@@ -33,15 +33,16 @@ ARGS=(
     CONFIG_SECTION_MISMATCH_WARN_ONLY=y
 )
 
-[[ "${KSU}" == true ]] && curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s legacy
-[[ -z ${DEFCONFIG} ]] && DEFCONFIG=rufnx_defconfig
-
-make ${ARGS[@]} $DEFCONFIG
-make ${ARGS[@]} | tee build.log
+make ${ARGS[@]} rufnx_defconfig
+make ${ARGS[@]} | tee compile.log
 
 if [ -f ${GZIP} ]; then
-    echo "==> Build success!"
+    echo "##############" 
+    echo "Build success!"
+    echo "##############"
 else
-    echo "==> Build failed, Image.gz not found"
+    echo "##############"
+    echo "Build failed! "
+    echo "##############"
     exit 1
 fi
