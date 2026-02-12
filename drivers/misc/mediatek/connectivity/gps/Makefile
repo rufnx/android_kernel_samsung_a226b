@@ -12,9 +12,9 @@
 ###############################################################################
 ifeq ($(GPS_CHIP_ID), common)
 
-$(warning GPS_CHIP_ID = common)
+$(info GPS_CHIP_ID = common)
 else
-$(warning GPS_CHIP_ID != common)
+$(info GPS_CHIP_ID != common)
 # Necessary Check
 MTK_PLATFORM := $(subst ",,$(CONFIG_MTK_PLATFORM))
 ifeq ($(CONFIG_MTK_GPS_SUPPORT), y)

@@ -20,7 +20,10 @@ CONFIG_MTK_FMRADIO=y
 
 # How to use
 ```
-rm -rf ${KERNEL_DIR}/drivers/misc/mediatek/connectivity && git clone https://github.com/rufnx/mtk_module_connectivity.git ${KERNEL_DIR}/drivers/misc/mediatek/connectivity
+export KERNEL_DIR=$PWD # kernel source
+rm -rf ${KERNEL_DIR}/drivers/misc/mediatek/connectivity
+
+git clone https://github.com/rufnx/mtk_module_connectivity.git ${KERNEL_DIR}/drivers/misc/mediatek/connectivity
 ```
 # Bootloop issue
 Bootloops can be caused by the drivers in `/vendor/lib/modules/*.ko` conflicting with drivers inline. Removing `/vendor/lib/modules/` can solve it.

@@ -121,5 +121,6 @@ ifeq ($(CONFIG_WLAN_DRV_BUILD_IN),y)
     export CFG_FM_CHIP=$(FM_CHIP)
     obj-y += fmradio/
     obj-y += gps/
+    oby-y += connfem/
 
 endif
