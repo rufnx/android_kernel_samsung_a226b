@@ -23,11 +23,11 @@ function send_telegram() {
 }
 
 function build_message() {
-    msg=$(zcat $GZIP | strings | grep "Linux version")
+    local msg=$(zcat $GZIP | strings | grep "Linux version")
 
     echo "\`\`\`
-$msg
-\`\`\`"
+    $msg
+    \`\`\`"
 }
 
 if [ ! -d $TOOLCHAIN ]; then
@@ -59,9 +59,9 @@ make ${ARGS[@]} rufnx_defconfig
 make ${ARGS[@]} | tee compile.log
 
 if [ -f $GZIP ]; then
-    echo "##############"
+    echo "########################"
     echo "Build success!"
-    echo "##############"
+    echo "########################"
 
     # Clone AnyKernel3 if not exist
     [ ! -d $ANYKERNEL_DIR ] && git clone https://github.com/rufnx/AnyKernel3 -b a22x $ANYKERNEL_DIR
@@ -83,9 +83,9 @@ if [ -f $GZIP ]; then
     send_telegram $ZIP_DIR/$zip_name "$message"
     echo "Kernel zip sent to Telegram successfully!"
 else
-    echo "##############"
+    echo "########################"
     echo "Build failed! "
-    echo "##############"
+    echo "########################"
 
     # Send error log to Telegram
     grep "Error" compile.log > error.log
