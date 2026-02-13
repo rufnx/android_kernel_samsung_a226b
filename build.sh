@@ -8,6 +8,13 @@ GZIP=$KERNEL_DIR/out/arch/arm64/boot/Image.gz
 ANYKERNEL_DIR=$KERNEL_DIR/AnyKernel3
 ZIP_DIR=$KERNEL_DIR/out/zip
 
+export KBUILD_BUILD_USER=rufnx
+export KBUILD_BUILD_HOST=$(hostname)
+
+export ANDROID_MAJOR_VERSION=r
+export KCFLAGS=-w
+export CONFIG_SECTION_MISMATCH_WARN_ONLY=y
+
 [ -z $BOT_TOKEN ] && echo "BOT_TOKEN not set"
 [ -z $CHAT_ID ] && echo "CHAT_ID not set"
 
