@@ -11,5 +11,5 @@
 # GNU General Public License for more details.
 #
 
-export CPUFREQ_ROOT_DIR ?= $(srctree)/drivers/misc/mediatek/base/power/cpufreq_v1
+export CPUFREQ_ROOT_DIR ?= $(src)
 obj-y += src/
