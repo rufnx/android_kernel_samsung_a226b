@@ -24,13 +24,10 @@ function send_telegram() {
 
 function build_message() {
     msg=$(zcat $GZIP | strings | grep "Linux version")
-    commit_id=$(git rev-parse --short HEAD)
-    commit_name=$(git log --format=%s -n 1)
 
     echo "\`\`\`
 $msg
-\`\`\`
-[$commit_id]($commit_name)"
+\`\`\`"
 }
 
 if [ ! -d $TOOLCHAIN ]; then

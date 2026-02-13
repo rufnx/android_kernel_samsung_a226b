@@ -9895,15 +9895,6 @@ int ufshcd_shutdown(struct ufs_hba *hba)
 
 	pm_runtime_get_sync(hba->dev);
 
-	/* MTK PATCH */
-	ufs_mtk_device_quiesce(hba);
-
-	/*
-	 * MTK PATCH: Remove Unregister RPMB
-	 * device during shutdown and UFSHCD removal
-	 */
-	ufshcd_rpmb_remove(hba);
-
 	ret = ufshcd_suspend(hba, UFS_SHUTDOWN_PM);
 out:
 	if (ret)
