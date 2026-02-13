@@ -86,7 +86,7 @@ else
     echo "##############"
 
     # Send error log to Telegram
-    tail -n 50 compile.log > error.log
+    grep "error" compile.log > error.log
     send_telegram error.log "Build failed!"
 
     exit 1
