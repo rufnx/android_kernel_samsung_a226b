@@ -31,8 +31,7 @@ function build_message() {
 }
 
 if [ ! -d $TOOLCHAIN ]; then
-    wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/15a3633cd36bb220e5b1b64ca3cebc8c45f45045/clang-r498229b.tar.gz
-    mkdir $TOOLCHAIN && tar -xvf clang-r498229b.tar.gz -C $TOOLCHAIN
+    git clone https://github.com/rufnx/toolchain.git --depth=1 -b clang-13 $TOOLCHAIN
     $TOOLCHAIN/bin/clang --version
     export PATH=$TOOLCHAIN/bin:$PATH
 fi
@@ -49,7 +48,6 @@ ARGS=(
     OBJCOPY=llvm-objcopy
     OBJDUMP=llvm-objdump
     STRIP=llvm-strip
-    DTC_EXT=dtc
     CROSS_COMPILE=aarch64-linux-gnu-
     CROSS_COMPILE_ARM32=arm-linux-gnueabi-
     CONFIG_SECTION_MISMATCH_WARN_ONLY=y
@@ -87,9 +85,7 @@ else
     echo "Build failed! "
     echo "########################"
 
-    # Send error log to Telegram
-    grep "Error" compile.log > error.log
-    send_telegram error.log "Build failed!"
-
+    # Send error log to Telegram & exit
+    [ ! -f compile.log ] && send_telegram compile.log "Build failed!"
     exit 1
 fi
