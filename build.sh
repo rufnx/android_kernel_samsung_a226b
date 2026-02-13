@@ -32,7 +32,8 @@ function send_telegram() {
 function build_message() {
     local msg=$(zcat $GZIP | strings | grep "Linux version")
 
-    echo "\`\`\`
+    echo "
+    \`\`\`
     $msg
     \`\`\`"
 }
@@ -78,14 +79,14 @@ if [ -f $GZIP ]; then
     cp $GZIP $ZIP_DIR/
 
     # Create zip file
-    zip_name=Kernel-$(date +%Y%m%d-%H%M).zip
+    ZIP_NAME=A226B-$(date +%Y%m%d-%H%M).zip
     cd $ZIP_DIR
-    zip -r9 $zip_name * -x .git README.md *placeholder
+    zip -r9 $ZIP_NAME . -x .git README.md *placeholder
     cd $KERNEL_DIR
 
     # Send to Telegram
-    message=$(build_message)
-    send_telegram $ZIP_DIR/$zip_name "$message"
+    MSG=$(build_message)
+    send_telegram $ZIP_DIR/$ZIP_NAME "$MSG"
     echo "Kernel zip sent to Telegram successfully!"
 else
     echo "########################"
