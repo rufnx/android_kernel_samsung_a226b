@@ -31,8 +31,8 @@ $msg
 }
 
 if [ ! -d $TOOLCHAIN ]; then
-    wget "$(curl -s https://raw.githubusercontent.com/ZyCromerZ/Clang/main/Clang-15-link.txt)" -O zyc-clang.tar.gz
-    mkdir $TOOLCHAIN && tar -xvf zyc-clang.tar.gz -C $TOOLCHAIN
+    wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/15a3633cd36bb220e5b1b64ca3cebc8c45f45045/clang-r498229b.tar.gz
+    mkdir $TOOLCHAIN && tar -xvf clang-r498229b.tar.gz -C $TOOLCHAIN
     $TOOLCHAIN/bin/clang --version
     export PATH=$TOOLCHAIN/bin:$PATH
 fi
@@ -86,7 +86,7 @@ else
     echo "##############"
 
     # Send error log to Telegram
-    grep "error" compile.log > error.log
+    grep "Error" compile.log > error.log
     send_telegram error.log "Build failed!"
 
     exit 1
