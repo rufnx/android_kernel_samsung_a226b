@@ -9,7 +9,7 @@ ANYKERNEL_DIR=$KERNEL_DIR/AnyKernel3
 ZIP_DIR=$KERNEL_DIR/out/zip
 
 export KBUILD_BUILD_USER=rufnx
-export KBUILD_BUILD_HOST=$(hostname)
+export KBUILD_BUILD_HOST=rufnxprjkt
 
 export ANDROID_MAJOR_VERSION=r
 export KCFLAGS=-w
@@ -94,6 +94,6 @@ else
     echo "########################"
 
     # Send error log to Telegram & exit
-    [ ! -f compile.log ] && send_telegram compile.log "Build failed!"
+    send_telegram compile.log "Build failed!"
     exit 1
 fi
