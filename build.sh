@@ -41,8 +41,9 @@ function build_message() {
 if [ ! -d $TOOLCHAIN ]; then
     git clone https://github.com/rufnx/toolchain.git --depth=1 -b clang-13 $TOOLCHAIN
     $TOOLCHAIN/bin/clang --version
-    export PATH=$TOOLCHAIN/bin:$PATH
 fi
+
+export PATH=$TOOLCHAIN/bin:$PATH
 
 ARGS=(
     -j$(nproc --all)
@@ -57,7 +58,6 @@ ARGS=(
     OBJDUMP=llvm-objdump
     STRIP=llvm-strip
     CROSS_COMPILE=aarch64-linux-gnu-
-    CROSS_COMPILE_ARM32=arm-linux-gnueabi-
     CONFIG_SECTION_MISMATCH_WARN_ONLY=y
 )
 
