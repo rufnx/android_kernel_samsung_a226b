@@ -44,7 +44,6 @@ if [ ! -d $TOOLCHAIN/gcc ]; then
     git clone https://github.com/rufnx/toolchain.git --depth=1 -b aarch64-linux-android-4.9 $TOOLCHAIN/gcc
 fi
 
-export PATH=$TOOLCHAIN/clang/bin:$TOOLCHAIN/gcc/bin$PATH
 
 ARGS=(
     -j$(nproc --all)
@@ -52,7 +51,8 @@ ARGS=(
     ARCH=arm64
     LLVM=1
     LLVM_IAS=1
-    CROSS_COMPILE=aarch64-linux-android-
+    CC=$TOOLCHAIN/clang/bin/clang
+    CROSS_COMPILE=$TOOLCHAIN/gcc/bin/aarch64-linux-android-
     CONFIG_SECTION_MISMATCH_WARN_ONLY=y
 )
 
