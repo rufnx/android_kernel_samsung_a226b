@@ -15,9 +15,6 @@ export ANDROID_MAJOR_VERSION=r
 export KCFLAGS=-w
 export CONFIG_SECTION_MISMATCH_WARN_ONLY=y
 
-[ -z $BOT_TOKEN ] && echo "BOT_TOKEN not set"
-[ -z $CHAT_ID ] && echo "CHAT_ID not set"
-
 function send_telegram() {
     local file=$1
     local caption=$2
@@ -38,12 +35,16 @@ function build_message() {
     \`\`\`"
 }
 
-if [ ! -d $TOOLCHAIN ]; then
-    git clone https://github.com/rufnx/toolchain.git --depth=1 -b clang-13 $TOOLCHAIN
-    $TOOLCHAIN/bin/clang --version
+if [ ! -d $TOOLCHAIN/clang ]; then
+    git clone https://github.com/rufnx/toolchain.git --depth=1 -b clang-11 $TOOLCHAIN/clang
+    $TOOLCHAIN/clang/bin/clang --version
 fi
 
-export PATH=$TOOLCHAIN/bin:$PATH
+if [ ! -d $TOOLCHAIN/gcc ]; then
+    git clone https://github.com/rufnx/toolchain.git --depth=1 -b aarch64-linux-android-4.9 $TOOLCHAIN/gcc
+fi
+
+export PATH=$TOOLCHAIN/clang/bin:$TOOLCHAIN/gcc/bin$PATH
 
 ARGS=(
     -j$(nproc --all)
@@ -51,13 +52,7 @@ ARGS=(
     ARCH=arm64
     LLVM=1
     LLVM_IAS=1
-    AR=llvm-ar
-    NM=llvm-nm
-    LD=ld.lld
-    OBJCOPY=llvm-objcopy
-    OBJDUMP=llvm-objdump
-    STRIP=llvm-strip
-    CROSS_COMPILE=aarch64-linux-gnu-
+    CROSS_COMPILE=aarch64-linux-android-
     CONFIG_SECTION_MISMATCH_WARN_ONLY=y
 )
 
@@ -84,10 +79,14 @@ if [ -f $GZIP ]; then
     zip -r9 $ZIP_NAME . -x .git README.md *placeholder
     cd $KERNEL_DIR
 
-    # Send to Telegram
-    MSG=$(build_message)
-    send_telegram $ZIP_DIR/$ZIP_NAME "$MSG"
-    echo "Kernel zip sent to Telegram successfully!"
+    if [ -z "$BOT_TOKEN" ]; then
+      echo "BOT_TOKEN kosong, skip kirim Telegram"
+      return 0
+    else
+      msg=$(build_message)
+      send_telegram "$ZIP_DIR/$ZIP_NAME" "$msg"
+      echo "Kernel zip sent to Telegram successfully!"
+    fi
 else
     echo "########################"
     echo "Build failed! "
